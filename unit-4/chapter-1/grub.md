@@ -133,9 +133,9 @@ title The change color entry
 6     Reboot the system
 ```
 
-# Creating a custom RC script
+# Creating carpald.sh Script
 
-### Note:- This script prompts user to take a break every 1 hour
+### Note:- This script prompts user to take a break every 1 hour. Name of the file: carparld.sh
 
 ## Open text editor and type the following
 
@@ -151,4 +151,117 @@ do
   echo "Get up and take a break" | \
   mail -s "Warning! Get up!" $ADDR
 done
+```
+
+## Save and change permissions
+
+```console
+user@programmer:~$ chmod 755 carpald.sh
+```
+
+## Move the script to /usr/local/sbin
+
+```console
+user@programmer:~$ mv carpald.sh /usr/local/sbin/
+```
+
+# Creating the Startup Script
+
+## Open text editor and type the following
+
+```console
+#!/bin/sh
+#Carpal
+#chkconfig 35 99 01
+# description: This is a prompt to tell user to take a break
+every 1 hr.
+
+# Source function library
+. /etc/rc.d/init.d/functions
+[ -f /usr/local/sbin/carpald.sh ] || exit 0
+
+case "$1" in
+start)
+  echo "Starting carpald: "
+  /usr/local/sbin/carpald.sh &
+  echo "done"
+  touch /var/lock/subsys/carparld
+;;
+stop)
+  echo -n "Stopping carpald services: "
+  echo "done"
+  killall -q -9 carparld &
+  rm -f /var/lock/subsys/carpald
+;;
+status)
+  status carpald
+;;
+restart|reload)
+  $0 stop
+  $0 start
+;;
+*)
+  echo "Usage: carpald start|stop|status|restart|reload"
+  exit 1
+  esac
+exit 0
+```
+
+### chkconfig 35 99 01 means 35 means create entries in 3 and 5 run levels, 99 means start the last and 01 means end the first.
+
+## Save the text into file called carpald
+
+## Change the permissions of this file
+
+```console
+user@programmer:~$ chmod 755 carpald
+```
+
+## Move into /etc/rc.d/init.d
+
+```console
+user@programmer:~$ mv carpald /etc/rc.d/init.d
+```
+
+## Tell chkconfig of existence of this script
+
+```console
+user@programmer:~$ chkconfig --add carpald
+```
+
+## Check the service
+
+```console
+user@programmer:~$ service carpald status
+user@programmer:~$ service carpald start
+user@programmer:~$ service carpald stop
+```
+
+# Enabling and disabling services
+
+## View all runlevels in carpald.sh
+
+```console
+user@programmer:~$ chkconfig --list carpald
+```
+
+## Make carpald.sh start up automatically at run level 2
+
+```console
+user@programmer:~$ chkconfig --level 2 carpald on
+```
+
+# Disabling a service
+
+## Disable the program
+
+```console
+user@programmer:~$ chkconfig carpald off
+```
+
+## Delete the program
+
+```console
+user@programmer:~$ chkconfig --del carpald
+user@programmer:~$ rm -f /usr/local/sbin/carpald.sh
 ```
