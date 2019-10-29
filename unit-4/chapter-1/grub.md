@@ -117,3 +117,18 @@ title The change color entry
 ## Comment out splashimage
 
 ## Comment out hiddenmenu
+
+# The init process
+
+### The various runlevels are
+
+```console
+0     Halt the system
+1     Enter single-user mode
+2     Multiuser mode, but without Network File System (NFS)
+3     Full multiuser mode
+4     Unused
+5     Same as runlevel 3, except using an X Window System login  
+      rather than a text based login
+6     Reboot the system
+```
