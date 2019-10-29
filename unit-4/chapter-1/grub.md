@@ -43,3 +43,9 @@ user@programmer:~$ find /grub/stage1
 ```console
 user@programmer:~$ setup (hd0)
 ```
+
+## Quit the GRUB shell
+
+```console
+user@programmer:~$ quit
+```
