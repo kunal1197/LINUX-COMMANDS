@@ -99,16 +99,20 @@ user@programmer:~$ cp initrd-2.6.25-14.fc9.i686.img duplicate-initrd.img
 
 ## Change in /boot/grub/menu.1st
 
+```console
 title The Duplicate Kernel
   color yellow/black
   root (hd0,0)
   kernel /duplicate-kernel ro root=UUID=7db5-4c27
   initrd /duplicate-initrd.img
+```
 
 ## Create another entry to change fg and bg colors
 
+```console
 title The change color entry
   color yellow/black
+```
 
 ## Comment out splashimage
 
