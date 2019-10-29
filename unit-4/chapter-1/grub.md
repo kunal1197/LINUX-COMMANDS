@@ -17,3 +17,29 @@ user@programmer:~$ mkbootdisk --device /tmp/BOOT-CD.iso --iso `uname -r`
 ```console
 user@programmer:~$ cdrecord speed=4 -eject --dev=/dev/sr0 /tmp/BOOT-CD.iso
 ```
+
+# Installing GRUB from the GRUB shell
+
+## Launch GRUB's shell
+
+```console
+user@programmer:~$ grub
+```
+
+## Set GRUB's root device from default fd0 to hd0
+
+```console
+user@programmer:~$ root (hd0, 0)
+```
+
+## Find the stage1 image
+
+```console
+user@programmer:~$ find /grub/stage1
+```
+
+## Install the GRUB bootloader directly on MBR
+
+```console
+user@programmer:~$ setup (hd0)
+```
