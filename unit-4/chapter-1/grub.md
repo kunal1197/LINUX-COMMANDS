@@ -141,7 +141,6 @@ title The change color entry
 
 ```console
 #!/bin/bash
-#
 #Description: This is a prompt to tell user to take a break
 every 1 hour.
 
