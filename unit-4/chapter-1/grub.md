@@ -49,3 +49,23 @@ user@programmer:~$ setup (hd0)
 ```console
 user@programmer:~$ quit
 ```
+
+# Grub Boot Floppy
+
+## Change directory to the location that contains GRUB images
+
+```console
+user@programmer:~$ cd /usr/share/grub/i386-redhat/
+```
+
+## Write stage1 to first 512 byts
+
+```console
+user@programmer:~$ dd if=stage1 of=/dev/fd0 bs=512 count=1
+```
+
+## Write stage2 after the stage1
+
+```console
+user@programmer:~$ dd if=stage2 of=/dev/fd0 bs=512
+```
