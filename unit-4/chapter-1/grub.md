@@ -69,3 +69,47 @@ user@programmer:~$ dd if=stage1 of=/dev/fd0 bs=512 count=1
 ```console
 user@programmer:~$ dd if=stage2 of=/dev/fd0 bs=512
 ```
+
+# Installing GRUB on MBR using a GRUB Floppy
+
+```console
+grub> root (hd0, 0)
+grub> setup (hd0)
+```
+
+# Adding new kernel to boot with GRUB
+
+## Change current working directory to /boot
+
+```console
+user@programmer:~$ cd /boot
+```
+
+## Make a copy of current kernel
+
+```console
+user@programmer:~$ cp vmlinuz-2.6.25-14.fc9.i686 duplicate-kernel
+```
+
+## Make a copy of initrd image
+
+```console
+user@programmer:~$ cp initrd-2.6.25-14.fc9.i686.img duplicate-initrd.img
+```
+
+## Change in /boot/grub/menu.1st
+
+title The Duplicate Kernel
+  color yellow/black
+  root (hd0,0)
+  kernel /duplicate-kernel ro root=UUID=7db5-4c27
+  initrd /duplicate-initrd.img
+
+## Create another entry to change fg and bg colors
+
+title The change color entry
+  color yellow/black
+
+## Comment out splashimage
+
+## Comment out hiddenmenu
