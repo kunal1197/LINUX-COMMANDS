@@ -120,7 +120,7 @@ title The change color entry
 
 # The init process
 
-### The various runlevels are
+### The various runlevels are, these are specified in /etc/inittab
 
 ```console
 0     Halt the system
@@ -131,4 +131,25 @@ title The change color entry
 5     Same as runlevel 3, except using an X Window System login  
       rather than a text based login
 6     Reboot the system
+```
+
+# Creating a custom RC script
+
+### Note:- This script prompts user to take a break every 1 hour
+
+## Open text editor and type the following
+
+```console
+#!/bin/bash
+#
+#Description: This is a prompt to tell user to take a break
+every 1 hour.
+
+ADDR=root@localhost
+while true
+do
+  sleep 1h
+  echo "Get up and take a break" | \
+  mail -s "Warning! Get up!" $ADDR
+done
 ```
