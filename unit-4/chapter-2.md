@@ -112,3 +112,118 @@ Command: q
 ```console
 user@programmer:~$ reboot
 ```
+
+# Create a physical volume
+
+## Display all physical volumes
+
+```console
+user@programmer:~$ pvdisplay
+```
+
+## Create a new physical volume
+
+### Note:- This physical volume is created using the newly created partition.
+
+```console
+user@programmer:~$ pvcreate /dev/sda3
+```
+
+# Adding a physical group to a volume group
+
+## Display all volume groups
+
+```console
+user@programmer:~$ vgdisplay
+```
+
+## Assign the physical volume to volume group
+
+```console
+user@programmer:~$ vgextend VolGroup00 /dev/sda3
+```
+
+# Create a logical volume
+
+## View all the LVs
+
+```console
+user@programmer:~$ lvdisplay | less
+```
+
+## Create a new LV (physical extents)
+
+```console
+user@programmer:~$ lvcreate -l 26 --name LogVol04 VolGroup00
+```
+
+## Create a new LV (size)
+
+```console
+user@programmer:~$ lvcreate -L 864M --name LogVol04 VolGroup00
+```
+
+# Creating file systems
+
+## Create a file system (ext3)
+
+```console
+user@programmer:~$ mkfs.ext3 /dev/VolGroup00/LogVol04
+```
+
+## Create a mount point
+
+```console
+user@programmer:~$ mkdir /new_var
+```
+
+## Mount (temporarily)
+
+```console
+user@programmer:~$ mount /dev/VolGroup00/LogVol04 /new_var
+```
+
+# Copy content from /var to /new_var
+
+```console
+user@programmer:~$ cp -rp /var/* /new_var/
+```
+
+## Safety measures
+
+```console
+user@programmer:~$ mount --bind /var/lib/nfs/rpc_pipefs \
+/new_var/lib/nfs/rpc_pipefs
+```
+
+## Rename /var to /old_var
+
+```console
+user@programmer:~$ mv /var /old_var
+```
+
+## Create a new empty /var
+
+```console
+user@programmer:~$ mkdir /var
+```
+
+# Restore security contexts
+
+```console
+user@programmer:~$ restorecon -R /var
+```
+
+## Create an entry in /etc/fstab (for permanent mounting)
+
+```console
+user@programmer:~$ echo "/dev/VolGroup00/LogVol04 /var ext3 defaults 1 2" >> /etc/fstab
+```
+
+## Reboot the system
+
+```console
+user@programmer:~$ shutdown -r now
+```
+
+## After the system boots up delete /old_var and /new_var
